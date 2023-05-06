@@ -1,0 +1,41 @@
+<h1>Ringle Music</h1>
+
+<% if @current_user %>
+  <p>Welcome, <%= @current_user.name %>!</p>
+  <%= link_to 'log out', logout_path %>
+
+
+<% else %>
+  <p>Welcome, Guest!</p>
+  <p>Please <%= link_to "sign in", login_path %> or <%= link_to "sign up", signup_path %>.</p>
+<% end %>
+
+<%# 검색 바, 정렬 %>
+<%= form_tag songs_path, method: :get do %>
+  <div class="form-group">
+    <%= text_field_tag :search, params[:search], class: "form-control", placeholder: "Search" %>
+    <%= select_tag :sort, options_for_select([["Relevance", "relevance"], ["Popularity", "popularity"], ["Newest", "newest"]], params[:sort]), class: "form-control" %>
+    <%= submit_tag "Search", class: "btn btn-primary" %>
+  </div>  
+<% end %>
+
+<table>
+  <thead>
+    <tr>
+      <th>Song Name</th>
+      <th>Artist Name</th>
+      <th>Album Name</th>
+      <th>Likes</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @songs.each do |song| %>
+      <tr>
+        <td><%= song.name %></td>
+        <td><%= song.artist %></td>
+        <td><%= song.album %></td>
+        <td><%= song.likes %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

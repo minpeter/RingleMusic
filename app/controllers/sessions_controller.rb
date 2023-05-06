@@ -18,8 +18,8 @@ class SessionsController < ApplicationController
     end
   end
 
-  # def destroy
-  #   cookies.delete(:jwt)
-  #   redirect_to root_path, notice: "로그아웃 되었습니다."
-  # end
+  def destroy
+    reset_session
+    redirect_to root_path
+  end
 end
