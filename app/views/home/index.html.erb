@@ -1,0 +1,10 @@
+<%# @current_user을 확인하고 geust인 경우에는 인삿말과 함계 가입/로그인 링크 %>
+
+<% if @current_user %>
+  <p>Welcome, <%= @current_user.name %>!</p>
+  <%# <%= link_to "Log out", logout_path, method: :delete %>
+
+<% else %>
+  <p>Welcome, Guest!</p>
+  <p>Please <%= link_to "log in", login_path %> or <%= link_to "sign up", signup_path %>.</p>
+<% end %>
