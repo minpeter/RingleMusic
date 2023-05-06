@@ -8,7 +8,11 @@ Rails.application.routes.draw do
 
   get '/signup', to: 'users#new'
   post '/signup', to: 'users#create'
-  
 
   get '/logout', to: 'sessions#destroy'
+
+  get '/playlists', to: 'playlists#index'
+  get '/playlists/new', to: 'playlists#new'
+  post '/playlists', to: 'playlists#create'
+
 end

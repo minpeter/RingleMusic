@@ -1,0 +1,17 @@
+<h2>New Playlist</h2>
+
+<% if alert %>
+  <div class="alert alert-danger"><%= alert %></div>
+<% end %>
+
+<%= form_tag playlists_path do %>
+  <p>
+    <%= label_tag :name %>
+    <%= text_field_tag :name %>
+  </p>
+  <p>
+    <%= submit_tag "Create Playlist" %>
+  </p>
+<% end %>
+
+<%= link_to 'Back', playlists_path %>

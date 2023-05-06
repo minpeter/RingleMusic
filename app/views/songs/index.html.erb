@@ -2,6 +2,7 @@
 
 <% if @current_user %>
   <p>Welcome, <%= @current_user.name %>!</p>
+  <%= link_to 'playlists', playlists_path %>
   <%= link_to 'log out', logout_path %>
 
 
