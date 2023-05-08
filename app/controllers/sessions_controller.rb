@@ -1,20 +1,20 @@
-require Rails.root.join('lib', 'json_web_token')
-
 class SessionsController < ApplicationController
   def new
   end
 
-  def create
-    user = User.find_by(email: params[:email])
-    
 
-    if user && user.authenticate(params[:password])
-      token = JsonWebToken.encode(user_id: user.id)
-      # 쿠키대신 세션에 jwt_token을 저장합니다.
-      session[:jwt_token] = token
-      redirect_to root_path, notice: "로그인 되었습니다."
+  def create
+    if params[:email].present? && params[:password].present?
+      user = User.find_by(email: params[:email])
+      if user && user.authenticate(params[:password])
+        session[:user_id] = user.id
+        redirect_to root_path
+        return
+      else
+        redirect_to login_path, alert: "이메일 또는 비밀번호가 올바르지 않습니다."
+      end
     else
-      redirect_to login_path, alert: "이메일 또는 비밀번호가 올바르지 않습니다."
+      redirect_to login_path, alert: "이메일 또는 비밀번호를 입력해주세요."
     end
   end
 
@@ -22,4 +22,7 @@ class SessionsController < ApplicationController
     reset_session
     redirect_to root_path
   end
+
+
+
 end

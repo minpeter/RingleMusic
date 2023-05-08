@@ -1,5 +1,3 @@
-require Rails.root.join('lib', 'json_web_token')
-
 class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
 
@@ -8,10 +6,9 @@ class ApplicationController < ActionController::Base
   private
 
   def current_user
-    if session[:jwt_token]
-      # jwt_token이 존재할 경우 디코딩하여 user를 찾는다.
-      decoded_token = JsonWebToken.decode(session[:jwt_token])
-      user_id = decoded_token[:user_id]
+    if session[:user_id].present?
+      # session에 user_id가 존재할 경우, 해당 user_id를 이용해 @current_user를 설정한다.
+      user_id = session[:user_id]
       @current_user = User.find_by(id: user_id)
     else
       # jwt_token이 존재하지 않을 경우 @current_user를 nil로 설정한다.
