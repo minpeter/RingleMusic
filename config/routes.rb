@@ -7,16 +7,15 @@ Rails.application.routes.draw do
   post '/login', to: 'sessions#create'
   delete '/logout', to: 'sessions#destroy'
 
-
   get '/signup', to: 'users#new'
   post '/signup', to: 'users#create'
 
-  # get '/playlists', to: 'playlists#index'
-  # get '/playlists/new', to: 'playlists#new'
-  # post '/playlists', to: 'playlists#create'
-  # delete '/playlists/:id(.:format)', to: 'playlists#destroy'
+  get '/playlist/new', to: 'playlists#new'
 
-  resources :playlists, only: [:index, :new, :create, :destroy]
-  
+  resources :playlists, only: [:index, :create, :destroy] do
+    get '/', to: 'playlist_songs#show'
+    post '/song', to: 'playlist_songs#create', as: 'song_create'
+    delete  '/song', to: 'playlist_songs#destroy', as: 'song_destroy'
+  end
 
 end

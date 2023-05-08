@@ -10,7 +10,17 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_05_06_193947) do
+ActiveRecord::Schema[7.0].define(version: 2023_05_08_045220) do
+  create_table "playlist_songs", force: :cascade do |t|
+    t.string "added_by"
+    t.integer "playlist_id", null: false
+    t.integer "song_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["playlist_id"], name: "index_playlist_songs_on_playlist_id"
+    t.index ["song_id"], name: "index_playlist_songs_on_song_id"
+  end
+
   create_table "playlists", force: :cascade do |t|
     t.string "name"
     t.integer "user_id", null: false
@@ -36,5 +46,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_05_06_193947) do
     t.string "name"
   end
 
+  add_foreign_key "playlist_songs", "playlists"
+  add_foreign_key "playlist_songs", "songs"
   add_foreign_key "playlists", "users"
 end
