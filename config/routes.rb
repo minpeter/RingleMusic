@@ -5,14 +5,18 @@ Rails.application.routes.draw do
 
   get '/login', to: 'sessions#new'
   post '/login', to: 'sessions#create'
+  delete '/logout', to: 'sessions#destroy'
+
 
   get '/signup', to: 'users#new'
   post '/signup', to: 'users#create'
 
-  get '/logout', to: 'sessions#destroy'
+  # get '/playlists', to: 'playlists#index'
+  # get '/playlists/new', to: 'playlists#new'
+  # post '/playlists', to: 'playlists#create'
+  # delete '/playlists/:id(.:format)', to: 'playlists#destroy'
 
-  get '/playlists', to: 'playlists#index'
-  get '/playlists/new', to: 'playlists#new'
-  post '/playlists', to: 'playlists#create'
+  resources :playlists, only: [:index, :new, :create, :destroy]
+  
 
 end

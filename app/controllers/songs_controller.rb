@@ -21,6 +21,7 @@ class SongsController < ApplicationController
     end
 
     @current_user = current_user
+      
     # render json: @songs
   end
 end

@@ -1,11 +1,15 @@
 <h2><%= @current_user.name %>'s Playlists</h2>
 
-<%= link_to 'New Playlist', playlists_new_path %>
+<%= link_to 'New Playlist', new_playlist_path %>
 
 <% if notice %>
   <div class="alert alert-success"><%= notice %></div>
 <% end %>
 
+
 <% @playlists.each do |playlist| %>
-  <h3> <%= playlist.name %> </h3>
+  <h3>
+    <%= playlist.name %>
+    <%= link_to "❌", playlist_path(playlist.id), data: { turbo_method: :delete } %>
+  </h3>
 <% end %>
