@@ -1,5 +1,7 @@
 # README
 
+음 지원 취소.. 레일즈는 생각보다 재밌었습니다..?
+
 This README would normally document whatever steps are necessary to get the
 application up and running.
 
