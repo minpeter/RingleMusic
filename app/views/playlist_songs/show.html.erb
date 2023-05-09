@@ -40,10 +40,12 @@
 <h3>Playlist Songs</h3>
 
 <% @pl_songs.each do |song| %>
-  <h3>
+  <li>
     <%= song.name %>
+    <%= song.added_by %>
     <%= link_to "❌", playlist_song_destroy_path(song_id: song.id), data: { turbo_method: :delete } %>
-  </h3>
+  </li>
 <% end %>
+
 
 <%= link_to "Back", playlists_path %>

@@ -1,3 +1,7 @@
+
+PlSong = Struct.new(:id, :name, :artist, :album, :added_by)
+
+
 class PlaylistSongsController < ApplicationController
 
   def show
@@ -7,12 +11,17 @@ class PlaylistSongsController < ApplicationController
       return
     end
 
-    # playlistSong에 playlists_id로 조회해서 playlistSong의 song_id를 song에서 조회
-    @playlist_song = PlaylistSong.where(playlist_id: params[:playlist_id])
-    
-
+    playlist_song = PlaylistSong.where(playlist_id: params[:playlist_id])
     @playlist_name = Playlist.find(params[:playlist_id]).name
+    # 반복문으로 playlist_song의 song_id를 이용해 Song 테이블에서 곡 정보를 가져온다.
 
+    @pl_songs = []
+    playlist_song.reverse_each do |ps|
+      song =  Song.find(ps.song_id)
+      @pl_songs << PlSong.new(song.id, song.name, song.artist, song.album, ps.added_by)
+    end
+
+    puts @pl_songs
     # ======
     search_term = params[:search]
     sort_order = params[:sort]
@@ -33,7 +42,7 @@ class PlaylistSongsController < ApplicationController
     else
       @songs = @songs.order(created_at: :desc)
     end
-    @pl_songs = Song.where(id: @playlist_song.pluck(:song_id))
+    
     @current_user = current_user
     # ======
   end
@@ -41,17 +50,21 @@ class PlaylistSongsController < ApplicationController
   def create
     song_id = params[:song_id]
     playlist_id = params[:playlist_id]
-    added_by = current_user.id
 
     @playlist_song = PlaylistSong.new
     @playlist_song.song_id = song_id
     @playlist_song.playlist_id = playlist_id
-    @playlist_song.added_by = added_by
+    @playlist_song.added_by = current_user.name
 
+    # 100개 이상의 곡을 추가할 수 없도록 한다. 넘어가는 경우 가장 처음 추가된 항목 삭제
+    if PlaylistSong.where(playlist_id: playlist_id).count >= 5
+      @playlist_song_delete = PlaylistSong.where(playlist_id: playlist_id).first
+      @playlist_song_delete.destroy
+    end
     if @playlist_song.save
-      redirect_to "/playlists/#{playlist_id}/playlist_songs", notice: "플레이리스트에 곡이 추가되었습니다."
+      redirect_to "/playlists/#{playlist_id}", notice: "플레이리스트에 곡이 추가되었습니다."
     else
-      redirect_to "/playlists/#{playlist_id}/playlist_songs", alert: "오류 발생!"
+      redirect_to "/playlists/#{playlist_id}", alert: "오류 발생!"
     end
 
   end
